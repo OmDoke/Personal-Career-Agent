@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { extractTextFromPDF } from '../services/pdf.service';
 import { analyzeResume } from '../services/ai.service';
+import { generateATSResumePDF } from '../services/pdfGenerator.service';
 import fs from 'fs';
 
 export const processResume = async (req: Request, res: Response): Promise<void> => {
@@ -39,5 +40,28 @@ export const processResume = async (req: Request, res: Response): Promise<void> 
                 if (err) console.error(`Failed to delete temporary file ${req.file?.path}`);
             });
         }
+    }
+};
+
+export const generatePdfFromOptimization = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { optimizedData } = req.body;
+
+        if (!optimizedData) {
+            res.status(400).json({ error: 'Optimized data is required to generate the PDF.' });
+            return;
+        }
+
+        // Generate the PDF Buffer
+        const pdfBuffer = await generateATSResumePDF(optimizedData);
+
+        // Send back as a file download
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=ATS_Optimized_Resume.pdf');
+        res.send(pdfBuffer);
+
+    } catch (error: any) {
+        console.error('Error generating PDF:', error);
+        res.status(500).json({ error: 'Server error generating PDF.' });
     }
 };

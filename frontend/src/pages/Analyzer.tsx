@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileText, Loader2, ArrowLeft, Sparkles } from 'lucide-react';
+import { Upload, FileText, Loader2, ArrowLeft, Sparkles, Download } from 'lucide-react';
 import { resumeApi } from '../api/resumeApi';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
@@ -10,7 +10,8 @@ export default function Analyzer() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
+  const [result, setResult] = useState<any | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -33,9 +34,29 @@ export default function Analyzer() {
       setResult(response.analysis);
     } catch (error) {
       console.error('Analysis failed:', error);
-      setResult('Failed to analyze the resume. Please ensure the backend server is running and your API keys are valid.');
+      setResult({ error: 'Failed to analyze the resume. Please ensure the backend server is running and your API keys are valid.' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!result || !result.optimizedData) return;
+    setDownloading(true);
+    try {
+      const blob = await resumeApi.generatePdf(result.optimizedData);
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'ATS_Optimized_Resume.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    } catch (error) {
+      console.error('Failed to download PDF:', error);
+      alert('Failed to generate optimized PDF.');
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -124,9 +145,53 @@ export default function Analyzer() {
               </CardHeader>
               <CardContent className="flex-1">
                 {result ? (
-                    <div className="prose prose-sm prose-slate max-w-none bg-white p-6 rounded-xl border border-slate-100 shadow-inner h-[500px] overflow-y-auto whitespace-pre-wrap">
-                       {result}
-                    </div>
+                    result.error ? (
+                        <div className="text-red-500 font-medium bg-red-50 p-4 rounded-xl border border-red-100">
+                            {result.error}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col h-full gap-4">
+                            <div className="flex items-center justify-between bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                                <div>
+                                    <h4 className="font-display font-bold text-slate-900">ATS Match Score</h4>
+                                    <p className="text-sm text-slate-500">Based on provided Job Description</p>
+                                </div>
+                                <div className={`text-3xl font-extrabold ${result.atsScore >= 80 ? 'text-emerald-600' : 'text-amber-500'}`}>
+                                    {result.atsScore}%
+                                </div>
+                            </div>
+
+                            <div className="prose prose-sm prose-slate max-w-none bg-white p-6 rounded-xl border border-slate-100 shadow-inner overflow-y-auto whitespace-pre-wrap flex-1 max-h-[400px]">
+                               {result.analysis}
+                            </div>
+
+                            {/* Show Download Button if Score is less than 80% */}
+                            {result.atsScore < 80 && result.optimizedData && (
+                                <div className="mt-4 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-indigo-100 rounded-xl">
+                                    <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                                        <div>
+                                            <h4 className="font-display font-bold text-indigo-900 mb-1">Boost Your Score to 90%+</h4>
+                                            <p className="text-sm text-indigo-700/80">
+                                                We've generated an honest, optimized version of your resume that naturally includes missing keywords based on your experience.
+                                            </p>
+                                        </div>
+                                        <Button 
+                                            onClick={handleDownloadPdf} 
+                                            disabled={downloading}
+                                            className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200"
+                                        >
+                                            {downloading ? (
+                                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                            ) : (
+                                                <Download className="w-4 h-4 mr-2" />
+                                            )}
+                                            Download Resume
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )
                 ) : (
                     <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-100 rounded-xl bg-slate-50/30">
                         <Sparkles className="w-12 h-12 mb-4 opacity-50" />

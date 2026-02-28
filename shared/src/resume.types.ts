@@ -1,10 +1,36 @@
 export interface OptimizedResume {
-    ats_match_score: number;
-    missing_skills: string[];
-    matching_skills: string[];
-    optimization_suggestions: string[];
-    optimized_resume_content: {
+    atsScore: number;
+    analysis: string;
+    optimizedData: {
+        header: {
+            name: string;
+            email: string;
+            phone: string;
+            linkedin?: string;
+            github?: string;
+        };
         summary: string;
-        experience_bullets: string[];
+        skills: {
+            languages?: string;
+            frameworks?: string;
+            tools?: string;
+            other?: string;
+        };
+        experience: {
+            company: string;
+            role: string;
+            dates: string;
+            bullets: string[];
+        }[];
+        projects: {
+            name: string;
+            techStack: string;
+            bullets: string[];
+        }[];
+        education: {
+            degree: string;
+            university: string;
+            year: string;
+        }[];
     };
 }

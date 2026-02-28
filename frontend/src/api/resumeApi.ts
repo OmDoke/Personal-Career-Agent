@@ -31,5 +31,17 @@ export const resumeApi = {
             console.error('Failed to analyze resume:', error);
             throw error;
         }
+    },
+
+    generatePdf: async (optimizedData: any) => {
+        try {
+            const response = await apiClient.post('/api/resume/generate-pdf', { optimizedData }, {
+                responseType: 'blob',
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Failed to generate PDF:', error);
+            throw error;
+        }
     }
 };
