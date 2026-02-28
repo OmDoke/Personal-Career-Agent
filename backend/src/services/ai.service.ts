@@ -7,7 +7,7 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
 export const analyzeResume = async (resumeText: string, jobDescription: string) => {
     try {

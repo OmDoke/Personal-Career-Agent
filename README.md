@@ -58,21 +58,21 @@ npm run dev
 # Server will run on http://localhost:5000
 \`\`\`
 
-### 3. Frontend Setup
-Open a new terminal window:
-\`\`\`bash
-cd frontend
-npm install
-\`\`\`
-Start the frontend dev server:
-\`\`\`bash
-npm run dev
-# Frontend will run on http://localhost:5173
-\`\`\`
+### Production Deployment (Single Server on Render)
+
+We have configured the application so that the Node.js backend automatically serves the pre-built React frontend. This means you only need to deploy **one** Web Service on Render, which will host both!
+
+1. **Create a new Web Service** on Render and connect your GitHub repository.
+2. **Setup Details**:
+    - **Build Command**: `npm install && npm run build`
+    - **Start Command**: `npm start`
+3. **Environment Variables**:
+    - Add `GEMINI_API_KEY`: Your exact Google Gemini API Key. (No frontend URL needed!).
+4. Click **Deploy**. Render will install all dependencies for both the frontend and backend, build the React app, build the Express server, and start the node process serving both on the same URL!
 
 ## Usage
-1. Make sure both servers are running.
-2. Visit `http://localhost:5173`.
+1. Make sure the server is running (locally or deployed).
+2. If local, visit `http://localhost:5000`. If deployed, visit your Render service URL.
 3. Click "Start Optimization" to proceed to the Analyzer page.
 4. Upload your resume PDF and paste the Job Description.
 5. Click "Analyze Now" to receive your custom ATS optimization list!

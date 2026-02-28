@@ -55,7 +55,7 @@ export default function Analyzer() {
         </button>
 
         <div className="space-y-2">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Resume Analyzer</h1>
+          <h1 className="text-4xl font-display font-extrabold tracking-tight text-slate-900">Resume Analyzer</h1>
           <p className="text-slate-500 text-lg">Upload your current PDF resume and the target job description to get instant, ATS-optimized feedback.</p>
         </div>
 

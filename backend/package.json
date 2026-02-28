@@ -27,6 +27,7 @@
         "@types/pdf-parse": "^1.1.4",
         "@types/pdfmake": "^0.2.11",
         "concurrently": "^9.1.2",
+        "dotenv": "^17.3.1",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.7.3"
     }
