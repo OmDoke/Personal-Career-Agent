@@ -43,6 +43,19 @@ export default function Home() {
           fabricating any fake experience.
         </p>
 
+        <div className="pt-16 pb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <Link to="/analyzer">
+            <Button size="lg" className="shadow-blue-200/50 min-w-[240px] font-display text-lg px-8 py-6 rounded-2xl">
+              Start Optimization <Sparkles className="ml-2 w-5 h-5 opacity-80" />
+            </Button>
+          </Link>
+          
+          <div className="mt-8 flex items-center justify-center font-display gap-2 text-sm font-semibold text-slate-600 bg-white/50 py-2.5 px-5 rounded-full inline-flex border border-slate-200/50 backdrop-blur-sm shadow-sm">
+            <div className={`w-2.5 h-2.5 rounded-full ${serverAwake ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-400 animate-pulse'}`} />
+            {serverAwake ? 'Agent is online and ready' : 'Waking up the Agent...'}
+          </div>
+        </div>
+
         <div className="pt-10 grid md:grid-cols-3 gap-8 text-left animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
           <Card className="hover:-translate-y-1 transition-transform duration-300">
             <CardContent className="pt-6">
@@ -73,19 +86,6 @@ export default function Home() {
               <p className="text-slate-600 text-sm leading-relaxed">Get an ATS-friendly analysis instantly. Zero hallucinations guaranteed.</p>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="pt-16 pb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <Link to="/analyzer">
-            <Button size="lg" className="shadow-blue-200/50 min-w-[240px]">
-              Start Optimization <Sparkles className="ml-2 w-5 h-5 opacity-80" />
-            </Button>
-          </Link>
-          
-          <div className="mt-8 flex items-center justify-center gap-2 text-sm font-medium text-slate-500 bg-white/50 py-2 px-4 rounded-full inline-flex border border-slate-200/50 backdrop-blur-sm">
-            <div className={`w-2.5 h-2.5 rounded-full ${serverAwake ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-400 animate-pulse'}`} />
-            {serverAwake ? 'Agent is online and ready' : 'Waking up the Agent...'}
-          </div>
         </div>
       </div>
     </div>
