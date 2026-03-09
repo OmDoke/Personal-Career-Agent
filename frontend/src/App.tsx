@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Analyzer from './pages/Analyzer';
+import Enhancer from './pages/Enhancer';
 import { Footer } from './components/layout/Footer';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/analyzer" element={<Analyzer />} />
+            <Route path="/enhancer" element={<Enhancer />} />
           </Routes>
         </main>
         <Footer />

@@ -43,5 +43,19 @@ export const resumeApi = {
             console.error('Failed to generate PDF:', error);
             throw error;
         }
+    },
+
+    enhanceResume: async (formData: FormData) => {
+        try {
+            const response = await apiClient.post('/api/resume/enhance', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Failed to enhance resume:', error);
+            throw error;
+        }
     }
 };

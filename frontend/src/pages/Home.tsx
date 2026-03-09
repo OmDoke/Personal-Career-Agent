@@ -44,11 +44,19 @@ export default function Home() {
         </p>
 
         <div className="pt-16 pb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <Link to="/analyzer">
-            <Button size="lg" className="shadow-blue-200/50 min-w-[240px] font-display text-lg px-8 py-6 rounded-2xl">
-              Start Optimization <Sparkles className="ml-2 w-5 h-5 opacity-80" />
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            <Link to="/analyzer">
+              <Button size="lg" className="shadow-blue-200/50 min-w-[240px] font-display text-lg px-8 py-6 rounded-2xl">
+                Scan ATS Score <Sparkles className="ml-2 w-5 h-5 opacity-80" />
+              </Button>
+            </Link>
+            
+            <Link to="/enhancer">
+              <Button size="lg" variant="outline" className="min-w-[240px] font-display text-lg px-8 py-6 rounded-2xl border-purple-200 text-purple-700 hover:bg-purple-50">
+                Custom Enhance <Sparkles className="ml-2 w-5 h-5 opacity-80" />
+              </Button>
+            </Link>
+          </div>
           
           <div className="mt-8 flex items-center justify-center font-display gap-2 text-sm font-semibold text-slate-600 bg-white/50 py-2.5 px-5 rounded-full inline-flex border border-slate-200/50 backdrop-blur-sm shadow-sm">
             <div className={`w-2.5 h-2.5 rounded-full ${serverAwake ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-400 animate-pulse'}`} />

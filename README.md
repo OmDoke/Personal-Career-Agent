@@ -2,7 +2,11 @@
 
 An AI-powered Applicant Tracking System (ATS) resume optimization platform.
 
-This platform allows users to upload their existing PDF resumes alongside a target job description. The system securely extracts the text from the PDF, performs a gap analysis using Google's Gemini AI, and provides an instant, actionable, and truthful breakdown of missing keywords and matches to improve their ATS score.
+## Project Description
+
+The Personal Career Agent is a comprehensive tool designed to help job seekers instantly tailor their resumes to specific job descriptions. By leveraging the power of advanced GenAI, the platform acts as your personal career advisor and technical recruiter. 
+
+Users upload their existing PDF resumes alongside a target job description. The system securely extracts the text from the PDF, performs a detailed gap analysis using Google's Gemini AI, and provides an actionable breakdown of missing keywords. In addition, the tool can automatically generate a professionally formatted, ATS-optimized version of your resume in PDF format, organically weaving in missing keywords to help you achieve a 90%+ ATS match score.
 
 ## Features
 

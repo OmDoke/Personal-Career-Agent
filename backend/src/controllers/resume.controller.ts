@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { extractTextFromPDF } from '../services/pdf.service';
-import { analyzeResume } from '../services/ai.service';
+import { analyzeResume, enhanceResume } from '../services/ai.service';
 import { generateATSResumePDF } from '../services/pdfGenerator.service';
 import fs from 'fs';
 
@@ -63,5 +63,45 @@ export const generatePdfFromOptimization = async (req: Request, res: Response): 
     } catch (error: any) {
         console.error('Error generating PDF:', error);
         res.status(500).json({ error: 'Server error generating PDF.' });
+    }
+};
+
+export const enhanceResumeData = async (req: Request, res: Response): Promise<void> => {
+    try {
+        if (!req.file) {
+            res.status(400).json({ error: 'No resume file uploaded.' });
+            return;
+        }
+
+        const { prompt, force } = req.body;
+        if (!prompt) {
+            res.status(400).json({ error: 'Enhancement prompt is required.' });
+            return;
+        }
+
+        const isForce = force === 'true' || force === true;
+        const filePath = req.file.path;
+
+        // 1. Extract text from the PDF
+        const resumeText = await extractTextFromPDF(filePath);
+
+        // 2. Pass text + prompt to Gemini AI
+        const enhancementResult = await enhanceResume(resumeText, prompt, isForce);
+
+        res.status(200).json({
+            message: 'Resume enhanced successfully',
+            analysis: enhancementResult
+        });
+
+    } catch (error: any) {
+        console.error('Error during resume enhancement:', error);
+        res.status(500).json({ error: error.message || 'Server error during enhancement.' });
+    } finally {
+        // Optional: Clean up the uploaded file immediately after processing to save space
+        if (req.file && req.file.path) {
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error(`Failed to delete temporary file ${req.file?.path}`);
+            });
+        }
     }
 };
